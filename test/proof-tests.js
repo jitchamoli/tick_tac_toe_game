@@ -6,7 +6,9 @@
 
 import { test, assert, assertEqual, note } from './harness.js';
 import { makeRules } from '../js/config.js';
-import { searchGameTree, walkEveryPosition, randomPlayouts } from './search.js';
+import {
+  searchGameTree, walkEveryPosition, randomPlayouts, findRepeatingLine,
+} from './search.js';
 
 /** Check the two guarantees over the whole tree for one rule set. */
 function proveNoDrawAndTermination(label, overrides = {}) {
@@ -79,6 +81,14 @@ test('negative control: without burning, the game can run forever', () => {
   note(`without burning: ${walk.positions.toLocaleString()} positions seen before the depth cap`);
   note(`  a position repeated inside a single line of play: ${walk.cycleDetected}`);
   note(`  empty-cell invariant holds: ${walk.emptyCellInvariantHolds}`);
+
+  // Show the failure in the flesh rather than as a statistic.
+  const loop = findRepeatingLine(broken);
+  assert(loop, 'expected to find a concrete repeating line of play');
+  const cycleLength = loop.moves.length - loop.repeatsFrom;
+  note(`  a concrete loop: ${loop.moves.map((c) => c + 1).join(' → ')}`);
+  note(`    the position after move ${loop.repeatsFrom} returns after move ${loop.moves.length}; ` +
+       `those ${cycleLength} moves repeat forever`);
 
   assert(walk.cycleDetected, 'expected play to be able to cycle without burning');
   assert(!walk.emptyCellInvariantHolds, 'expected the empty-cell invariant to fail');

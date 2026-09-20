@@ -158,14 +158,44 @@ tree runs to tens of millions of positions, past what a browser tab should be
 asked to chew through. That test is labelled as sampling in the output, and it is
 weaker evidence: it can fail to find a counterexample but cannot rule one out.
 
-### The negative control
+### The negative control: is the burn rule actually necessary?
 
-Burning is the load-bearing rule, so the suite also runs a configuration with it
-switched off (`burnOnDecay: false`). With a decayed square reopening, the search
-finds a position repeating inside a single line of play and reports the E
-invariant broken — exactly the failure the burn rule prevents. The claim is not
-just "our rules work" but "here is the specific thing that makes them work, and
-here is what happens without it".
+It is the obvious thing to challenge. Burning is not in the brief — nothing about
+the rules is — so the question is whether it earns its place. Without it, this is
+classic fading-marks tic-tac-toe: marks decay, squares reopen, the board never
+fills, and no game can be drawn. The no-draw property survives untouched. Only
+termination breaks.
+
+And it breaks in a way that is almost invisible in play. Across 20,000 random
+games with burning switched off, **every single one ended in a three-in-a-row**,
+the longest after 85 moves. You could playtest it all afternoon and never suspect
+a problem.
+
+But the brief asks for something stronger than "games tend to end". It asks that
+**no** line of play continue indefinitely, and that is a claim about every line of
+play, including the ones two stubborn players would actually choose. The test
+suite prints a concrete counterexample, found by `findRepeatingLine` in
+`test/search.js`:
+
+```
+1 → 2 → 3 → 4 → 5 → 6 → 8 → 1 → 7 → 2 → 3 → 4 → 6 → 5 → 8 → 1 → 7 → 2 → 3 → 4
+```
+
+The position after move 12 comes back after move 20. Those eight moves can be
+repeated forever, and neither player is ever forced to leave the loop. Random play
+never finds it; two players avoiding defeat find it immediately.
+
+So the burn rule replaces a game that *usually* ends with one that *must*. It is
+not the only possible fix — losing on repetition also terminates — but that makes
+a move's legality depend on the whole history, which puts an exhaustive search out
+of reach and leaves only an informal argument, the weakest evidence the brief
+accepts. Burning buys termination for one strictly decreasing counter and a
+three-line proof.
+
+The suite therefore runs the broken configuration deliberately, and asserts both
+failures: the repeating line, and the E invariant breaking. The claim is not just
+"our rules work" but "here is the specific thing that makes them work, and here is
+what goes wrong without it".
 
 ---
 
@@ -198,7 +228,31 @@ keeps a running score, so a **match** is even even though a single game is not.
 
 ---
 
-## 6. Designing for change
+## 6. How games actually end, and why three marks
+
+The nowhere-to-place ending is not a rare backstop. Under random play it is the
+majority outcome, and that is worth stating plainly because it is the first thing
+a player notices:
+
+| marks each | ends with three-in-a-row | ends by nowhere to place |
+|---|---|---|
+| **3 (shipped)** | 42% | 58% |
+| 4 | 78% | 22% |
+
+Four marks each makes the game end in a line far more often, and every guarantee
+survives — the exhaustive search covers that configuration and passes. It was
+considered and rejected anyway, because of what it costs: with four marks each the
+first eight moves are ordinary placements and **exactly one decay happens per
+game**, on move nine. The mechanic stops shaping play and becomes a twist in the
+endgame.
+
+That is the real tension in this design, and it does not have a clean resolution:
+the more the decay rule drives the game, the more often the board closes in before
+anyone completes a line. Three marks keeps the mechanic doing the work, and
+accepts that most games are won by leaving your opponent nowhere to go. Changing
+that judgement is one value in `config.js`.
+
+## 7. Designing for change
 
 The interview includes an unannounced modification, so the code is arranged so
 that rule changes land in one place.
@@ -230,7 +284,7 @@ comes with its own evidence.
 
 ---
 
-## 7. What is broken, weak, or unfinished
+## 8. What is broken, weak, or unfinished
 
 Honestly, and in order of how much it matters:
 
@@ -251,13 +305,21 @@ Honestly, and in order of how much it matters:
    `js/config.js`.
 6. **Undo does not cross a game boundary.** Starting a new game clears the
    history. Within a game it rolls back the score correctly.
-7. **No keyboard navigation of the grid, and no AI opponent.** Both are explicitly
+7. **Chrome caches ES modules hard, and a plain reload can serve a stale one.**
+   This bit during development: after editing `config.js` the test page reran and
+   passed — against the previous version of the file. A silently stale pass is
+   worse than a failure, so the suite's first check compares the loaded modules
+   against a cache-busted refetch and fails with the fix in the message. The
+   underlying caching is a browser behaviour, not something a no-build static
+   site can prevent; the guard makes it impossible to miss. Hard reload with
+   Cmd/Ctrl+Shift+R.
+8. **No keyboard navigation of the grid, and no AI opponent.** Both are explicitly
    unscored by the brief, so neither was built.
-8. **The 3×3 proof runs on the main thread** and takes roughly a second and a half
+9. **The 3×3 proof runs on the main thread** and takes roughly a second and a half
    in total across all configurations. Long enough to notice, short enough not to
    warrant a worker.
 
-## 8. Time
+## 9. Time
 
 Roughly 35 minutes of active work to this point, well inside the three-hour box.
 The commit timestamps in `git log` and the session file in `transcript/` show the

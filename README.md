@@ -20,7 +20,8 @@ Tested in current Chrome.
 
 > After editing a file under `js/`, reload with **Cmd/Ctrl + Shift + R**. Chrome
 > caches ES modules aggressively, and a normal reload can quietly serve you the
-> previous version.
+> previous version. The test page checks for this and fails loudly if the page is
+> running a stale copy, so a cached run can never be mistaken for a passing one.
 
 ## The rules in one paragraph
 

@@ -4,7 +4,7 @@
  */
 
 import { test, assert, assertEqual, assertThrows } from './harness.js';
-import { makeRules } from '../js/config.js';
+import { makeRules, DEFAULT_RULES } from '../js/config.js';
 import { winningLines } from '../js/lines.js';
 import {
   createGame, applyMove, legalMoves, emptyCells, canSwap,
@@ -20,6 +20,26 @@ function play(state, cells) {
 // These pin the directions explicitly rather than relying on the defaults, so
 // that changing a default in config.js cannot fail them for the wrong reason.
 const ALL_DIRECTIONS = { horizontal: true, vertical: true, diagonal: true };
+
+test('the page is running the current source, not a cached copy', async () => {
+  // Chrome caches ES modules hard. A plain reload after editing js/ can leave
+  // the page running the previous version — and then every check below passes
+  // against code that is not on disk, which is worse than failing. A
+  // cache-busted import always refetches, so comparing the two catches it.
+  const stamp = Date.now();
+  const freshConfig = await import(`../js/config.js?stale-check=${stamp}`);
+  const freshLines = await import(`../js/lines.js?stale-check=${stamp}`);
+
+  assertEqual(
+    DEFAULT_RULES, freshConfig.DEFAULT_RULES,
+    'js/config.js on disk differs from the copy this page loaded — hard reload (Cmd/Ctrl+Shift+R)',
+  );
+  assertEqual(
+    winningLines(rules).length,
+    freshLines.winningLines(freshConfig.makeRules()).length,
+    'js/lines.js on disk differs from the copy this page loaded — hard reload (Cmd/Ctrl+Shift+R)',
+  );
+});
 
 test('a 3x3 board has the eight familiar winning lines', () => {
   assertEqual(winningLines(makeRules({ directions: ALL_DIRECTIONS })).length, 8);

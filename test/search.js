@@ -204,3 +204,39 @@ export function randomPlayouts(rules, games, random = Math.random) {
   }
   return stats;
 }
+
+/**
+ * Find a concrete line of play that returns to a position it already visited.
+ *
+ * Used by the negative control to show the failure in the flesh: without the
+ * burn rule there is a specific, short, repeatable sequence of moves, not just
+ * an abstract possibility of one.
+ *
+ * Returns `{ moves, repeatsFrom }` — the cells played in order, and the move
+ * number whose position the final one reproduces — or null if none was found
+ * within `maxDepth`.
+ */
+export function findRepeatingLine(rules, { maxDepth = 20 } = {}) {
+  const onPath = new Map();
+  let found = null;
+
+  function search(state, moves) {
+    if (found) return;
+    const key = stateKey(state);
+    if (onPath.has(key)) {
+      found = { moves, repeatsFrom: onPath.get(key) };
+      return;
+    }
+    if (state.status.over || moves.length >= maxDepth) return;
+
+    onPath.set(key, moves.length);
+    for (const move of legalMoves(state)) {
+      search(applyMove(state, move), [...moves, move.cell]);
+      if (found) return;
+    }
+    onPath.delete(key);
+  }
+
+  search(createGame(rules), []);
+  return found;
+}

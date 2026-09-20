@@ -259,7 +259,8 @@ that rule changes land in one place.
 
 - **`js/config.js`** holds every tunable rule. Board size, win length, which
   directions count, marks per player, whether decay burns, which mark decays, the
-  swap rule, who starts.
+  swap rule, who starts. Interface switches live beside them in `UI_OPTIONS`, kept
+  separate because the engine and the proof read the rules and never read those.
 - **`js/lines.js`** generates the winning lines from those values instead of
   hardcoding the eight lines of a 3×3 board.
 - **`js/engine.js`** is pure and immutable: `applyMove` returns a new state. That
@@ -278,6 +279,7 @@ Worked examples of changes and where they land:
 | Newest mark decays instead of oldest | `decaySelection: 'newest'` |
 | Player chooses which mark decays | one entry in `DECAY_STRATEGIES`, plus a UI affordance |
 | Turn the swap rule back on | `swapRule: true` (the button is already wired) |
+| Show the undo button | `UI_OPTIONS.showUndo: true` |
 
 In each case the proof page re-runs against the changed rules, so a live edit
 comes with its own evidence.
@@ -303,8 +305,14 @@ Honestly, and in order of how much it matters:
    it is the negative control — but it does mean the config object contains a
    setting that breaks the headline guarantee. It is commented as such in
    `js/config.js`.
-6. **Undo does not cross a game boundary.** Starting a new game clears the
-   history. Within a game it rolls back the score correctly.
+6. **Undo is built but hidden by default.** Both players share one screen, so an
+   undo button undoes whoever moved last — including your opponent's move,
+   against their wishes. That is a bad thing to hand two competing players, so
+   `UI_OPTIONS.showUndo` ships `false`. It is kept because it is genuinely useful
+   when demonstrating the game to an audience, and because it costs eight lines:
+   engine states are immutable, so the move history *is* the undo stack. When
+   switched on it rolls the score back correctly but does not cross a game
+   boundary — starting a new game clears the history.
 7. **Chrome caches ES modules hard, and a plain reload can serve a stale one.**
    This bit during development: after editing `config.js` the test page reran and
    passed — against the previous version of the file. A silently stale pass is

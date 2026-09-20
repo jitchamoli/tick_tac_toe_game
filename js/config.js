@@ -56,6 +56,23 @@ export const DEFAULT_RULES = {
   firstPlayer: 'X',
 };
 
+/**
+ * Interface options. These are not rules: the engine and the exhaustive proof
+ * never read them, so changing one cannot affect the no-draw or termination
+ * guarantees.
+ */
+export const UI_OPTIONS = {
+  /**
+   * Show the undo button?
+   *
+   * Off. Both players share one screen and one keyboard, so an undo button is
+   * an undo of whoever moved last — including your opponent's move, against
+   * their wishes. Useful when demonstrating the game to an audience, which is
+   * why it is still here; not something to hand two competing players.
+   */
+  showUndo: false,
+};
+
 /** The two players, in turn order. */
 export const PLAYERS = ['X', 'O'];
 

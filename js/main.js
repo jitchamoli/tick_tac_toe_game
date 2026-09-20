@@ -6,7 +6,7 @@
  * and the undo stack.
  */
 
-import { DEFAULT_RULES, makeRules } from './config.js';
+import { DEFAULT_RULES, UI_OPTIONS, makeRules } from './config.js';
 import { createGame, applyMove, opponentOf } from './engine.js';
 import { renderBoard, renderStatus, renderLog, renderScore, renderSwap } from './ui.js';
 
@@ -63,6 +63,7 @@ function render() {
   renderLog(history, elements.log);
   renderScore(score, state, elements.score);
   renderSwap(state, elements.swap);
+  elements.undo.hidden = !UI_OPTIONS.showUndo;
   elements.undo.disabled = history.length < 2;
 }
 

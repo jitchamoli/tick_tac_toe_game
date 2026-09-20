@@ -71,14 +71,21 @@ loaded but only `playwright` was used, for browser verification.
 
 ## Redaction
 
-Two kinds of change were made to the session file, both mechanical:
+Only credentials were changed, and only mechanically:
 
-1. Values of JSON keys shaped like `*_TOKEN`, `*_KEY`, `*_SECRET` or `*_PASSWORD`
-   were replaced with `[REDACTED]`.
-2. One live API token — a Financial Modeling Prep key belonging to an unrelated
-   MCP server, which was printed into the session while auditing the config for
-   exactly this reason — was replaced with `[REDACTED-FMP-TOKEN]` wherever it
-   appeared, including where a command echoed it.
+| Marker | What it replaced |
+|---|---|
+| `[REDACTED]` | Values of JSON keys shaped like `*_TOKEN`, `*_KEY`, `*_SECRET`, `*_PASSWORD`. |
+| `[REDACTED-CREDENTIAL]` / `[REDACTED-FMP-TOKEN]` | A live API token, in full. |
+| `[REDACTED-FRAGMENT]` | Leading fragments of that token, which survived in the text of the commands used to search for it. |
+
+The token was a Financial Modeling Prep key belonging to an MCP server configured
+machine-wide on this laptop. **It has nothing to do with this exercise** — the
+server failed to connect at startup and was never called. It entered the session
+because the config was read in order to assemble this very directory, and printed
+before it was redacted. The tidier method — redact at read time, never print the
+raw value — is what the final snapshot script does; the earlier, clumsier attempts
+are in the record rather than edited out of it.
 
 Nothing else was altered, removed or reordered. No summarising, no tidying.
 

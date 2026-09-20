@@ -73,10 +73,13 @@ Everything in `config/` shaped the model's behaviour during this session.
 | `config/superpowers/skills/using-superpowers/` | The skill that hook injects. |
 | `config/superpowers/skills/brainstorming/` | The one skill actually invoked during this work, before any design decisions were made. |
 
-There is no project-level `CLAUDE.md`, no `.claude/` directory in the repo, no
-custom slash commands, no subagents and no custom hooks. The other enabled
-plugins (`code-review`, `frontend-design`, `feature-dev`, `playwright`) were
-loaded but only `playwright` was used, for browser verification.
+**No project-level config shaped this session.** The `CLAUDE.md` now in the repo
+root was written *after* the work was finished, to orient a fresh session during
+the live change at the interview; it did not influence anything in this record.
+There is no `.claude/` directory in the repo, no custom slash commands, no
+subagents and no custom hooks. The other enabled plugins (`code-review`,
+`frontend-design`, `feature-dev`, `playwright`) were loaded but only `playwright`
+was used, for browser verification.
 
 ## Redaction
 

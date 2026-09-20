@@ -38,8 +38,19 @@ export const DEFAULT_RULES = {
   /** Which of your marks decays. See DECAY_STRATEGIES in engine.js. */
   decaySelection: 'oldest',
 
-  /** After X's first mark, may O swap sides once? */
-  swapRule: true,
+  /**
+   * After X's first mark, may O swap sides once (the "pie rule")?
+   *
+   * Off, and deliberately so. The pie rule balances a game by making the first
+   * player pick an opening not worth stealing — but this variant has no draws,
+   * so every position is a win for exactly one side and the player who chooses
+   * sides last simply takes the winning one. The exhaustive search confirms all
+   * nine openings are wins for X, so O would always swap. It transfers the
+   * advantage rather than removing it. See docs/DESIGN.md.
+   *
+   * The rule is implemented and tested, so this can be switched back on.
+   */
+  swapRule: false,
 
   /** Who moves first. */
   firstPlayer: 'X',

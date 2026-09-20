@@ -53,6 +53,16 @@ export function createGame(rules = DEFAULT_RULES) {
   };
 }
 
+/**
+ * The mark that will decay when `player` next places, or null if they are still
+ * below the mark limit. The UI shows this so players can plan around it.
+ */
+export function nextToDecay(state, player = state.turn) {
+  const marks = state.marks[player];
+  if (marks.length < state.rules.maxMarks) return null;
+  return marks[DECAY_STRATEGIES[state.rules.decaySelection](marks)];
+}
+
 /** Cells that are empty and not burned. */
 export function emptyCells(state) {
   const cells = [];

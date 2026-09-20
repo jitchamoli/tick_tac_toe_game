@@ -27,27 +27,31 @@ test('turning diagonals off leaves six lines, and nothing else changes', () => {
   assertEqual(winningLines(makeRules({ size: 4, winLength: 4 })).length, 10);
 });
 
+// X takes 0, 1, 5 and O takes 2, 3, 7. Neither triple is a line, so these games
+// reach the decay phase instead of ending early.
+const OPENING = [0, 2, 1, 3, 5, 7];
+
 test('the first three marks of each player are placed with no decay', () => {
-  const state = play(createGame(rules), [0, 1, 3, 4, 6, 7]);
-  assertEqual(state.marks.X, [0, 3, 6], 'X holds three marks');
-  assertEqual(state.marks.O, [1, 4, 7], 'O holds three marks');
+  const state = play(createGame(rules), OPENING);
+  assertEqual(state.marks.X, [0, 1, 5], 'X holds three marks');
+  assertEqual(state.marks.O, [2, 3, 7], 'O holds three marks');
   assertEqual(state.burned.filter(Boolean).length, 0, 'nothing has burned yet');
+  assertEqual(state.status.over, false, 'neither triple is a line');
 });
 
 test('a fourth mark removes your oldest and burns the cell it sat on', () => {
-  // X: 0, 4, 8 would be a diagonal win, so keep the marks scattered and harmless.
-  const before = play(createGame(rules), [0, 1, 3, 2, 6, 5]);
-  assertEqual(before.marks.X, [0, 3, 6]);
+  const before = play(createGame(rules), OPENING);
+  assertEqual(before.marks.X, [0, 1, 5]);
 
-  const after = applyMove(before, { type: 'place', cell: 7 });
-  assertEqual(after.marks.X, [3, 6, 7], 'oldest X mark is gone, new one appended');
+  const after = applyMove(before, { type: 'place', cell: 4 });
+  assertEqual(after.marks.X, [1, 5, 4], 'oldest X mark is gone, new one appended');
   assertEqual(after.board[0], null, 'the vacated cell is empty of marks');
   assert(after.burned[0], 'the vacated cell is burned');
   assertEqual(after.lastMove.decayed, 0);
 });
 
 test('a burned cell is never playable again, by either player', () => {
-  const state = play(createGame(rules), [0, 1, 3, 2, 6, 5, 7]);
+  const state = play(createGame(rules), [...OPENING, 4]);
   assert(state.burned[0], 'cell 0 burned');
   assert(!emptyCells(state).includes(0), 'burned cell is not empty');
   assert(!legalMoves(state).some((m) => m.cell === 0), 'burned cell is not offered');
@@ -104,8 +108,9 @@ test('applying a move leaves the previous state untouched, so undo is free', () 
   assertEqual(JSON.stringify(state), snapshot, 'the original state did not change');
 });
 
-test('the swap is offered once, only to O, and changes nothing but the seats', () => {
-  const start = createGame(rules);
+test('the swap, when switched on, is offered once and changes nothing but the seats', () => {
+  // Shipped off; see js/config.js and docs/DESIGN.md for why.
+  const start = createGame(makeRules({ swapRule: true }));
   assert(!canSwap(start), 'not offered before X has moved');
 
   const afterX = applyMove(start, { type: 'place', cell: 4 });

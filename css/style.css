@@ -1,0 +1,127 @@
+/* Plain and legible. The brief does not score visual design, so this stays
+   small: enough styling to make burned cells, decaying marks and the winning
+   line unmistakable. */
+
+:root {
+  --ink: #16181d;
+  --muted: #5b6270;
+  --line: #c5cad3;
+  --page: #f7f8fa;
+  --panel: #ffffff;
+  --x: #1b5fd0;
+  --o: #b3341f;
+  --burn: #8b8f98;
+  --win: #d8f0d4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 2rem 1rem 4rem;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main { max-width: 34rem; margin: 0 auto; }
+
+h1 { font-size: 1.5rem; margin: 0 0 0.25rem; }
+h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 0.5rem; }
+
+.tagline, .score { color: var(--muted); margin: 0 0 0.5rem; }
+.tagline a { color: var(--muted); }
+
+.score { font-variant-numeric: tabular-nums; }
+
+.status {
+  min-height: 3rem;
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.status.over { font-weight: 600; color: var(--ink); }
+
+/* --size comes from the rules, so a bigger board needs no CSS change. */
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--size, 3), 1fr);
+  gap: 6px;
+  max-width: 21rem;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 2.25rem/1 system-ui, sans-serif;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.cell:hover:not(:disabled) { background: #eef2fb; }
+.cell:disabled { cursor: default; }
+
+.mark-x { color: var(--x); }
+.mark-o { color: var(--o); }
+
+/* The mark that will be removed when the player to move places. */
+.cell.decaying {
+  opacity: 0.4;
+  border-style: dashed;
+  border-color: var(--burn);
+}
+
+/* Burned: dead ground, never playable again. */
+.cell.burned {
+  color: var(--burn);
+  border-color: var(--line);
+  background:
+    repeating-linear-gradient(45deg, #e6e8ec 0 6px, #dcdfe5 6px 12px);
+}
+
+.cell.winning { background: var(--win); border-color: #7fb877; }
+
+.controls { display: flex; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+.controls button {
+  font: inherit;
+  padding: 0.45rem 0.9rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.controls button:disabled { color: var(--burn); cursor: default; }
+#swap { border-color: var(--x); color: var(--x); }
+
+.log {
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  max-height: 11rem;
+  overflow-y: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.log li.decisive { color: var(--ink); font-weight: 600; }
+
+.reminder { margin-top: 1.75rem; }
+.reminder ul { margin: 0; padding-left: 1.25rem; color: var(--muted); }
+
+/* Test page */
+body.tests { max-width: none; }
+body.tests .intro { color: var(--muted); max-width: 42rem; }
+.result { border-left: 3px solid var(--line); padding: 0.1rem 0 0.1rem 0.75rem; margin: 0.75rem 0; }
+.result.pass { border-left-color: #3f9b4b; }
+.result.fail { border-left-color: #c23a22; }
+.result-name { margin: 0.25rem 0; font-weight: 600; font-family: ui-monospace, monospace; font-size: 0.9rem; }
+.note { margin: 0.1rem 0; color: var(--muted); font-family: ui-monospace, monospace; font-size: 0.82rem; white-space: pre-wrap; }
+.error { color: #c23a22; font-size: 0.8rem; overflow-x: auto; }
+.summary { font-weight: 700; padding: 0.6rem 0.75rem; border-radius: 6px; }
+.summary.pass { background: #e4f4e2; }
+.summary.fail { background: #fbe3de; }

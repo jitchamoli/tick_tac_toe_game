@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decay Tic-Tac-Toe</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main>
+  <h1>Decay Tic-Tac-Toe</h1>
+  <p class="tagline">
+    Tic-tac-toe that can never end in a draw.
+    <a href="docs/RULES.md">Rules</a> ·
+    <a href="tests.html">Proof</a>
+  </p>
+
+  <p id="score" class="score"></p>
+  <p id="status" class="status"></p>
+
+  <div id="board" class="board" role="grid" aria-label="game board"></div>
+
+  <div class="controls">
+    <button id="swap" type="button" hidden>Swap sides</button>
+    <button id="undo" type="button">Undo</button>
+    <button id="new-game" type="button">New game</button>
+  </div>
+
+  <section class="log-panel">
+    <h2>Moves</h2>
+    <ol id="log" class="log"></ol>
+  </section>
+
+  <section class="reminder">
+    <h2>How it works</h2>
+    <ul>
+      <li>You may hold at most <strong>three marks</strong>.</li>
+      <li>From your fourth turn, your <strong>oldest mark is removed</strong> and the
+        cell it sat on is <strong>burned</strong> — dead for both players — before you place.</li>
+      <li><strong>Three in a row wins</strong>, at any moment.</li>
+      <li>If it is your turn and there is <strong>nowhere left to place, you lose</strong>.</li>
+    </ul>
+  </section>
+</main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

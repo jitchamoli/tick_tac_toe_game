@@ -17,14 +17,21 @@ function play(state, cells) {
   return cells.reduce((s, cell) => applyMove(s, { type: 'place', cell }), state);
 }
 
+// These pin the directions explicitly rather than relying on the defaults, so
+// that changing a default in config.js cannot fail them for the wrong reason.
+const ALL_DIRECTIONS = { horizontal: true, vertical: true, diagonal: true };
+
 test('a 3x3 board has the eight familiar winning lines', () => {
-  assertEqual(winningLines(rules).length, 8);
+  assertEqual(winningLines(makeRules({ directions: ALL_DIRECTIONS })).length, 8);
 });
 
 test('turning diagonals off leaves six lines, and nothing else changes', () => {
-  const noDiagonals = makeRules({ directions: { diagonal: false } });
+  const noDiagonals = makeRules({ directions: { ...ALL_DIRECTIONS, diagonal: false } });
   assertEqual(winningLines(noDiagonals).length, 6);
-  assertEqual(winningLines(makeRules({ size: 4, winLength: 4 })).length, 10);
+  assertEqual(
+    winningLines(makeRules({ size: 4, winLength: 4, directions: ALL_DIRECTIONS })).length,
+    10,
+  );
 });
 
 // X takes 0, 1, 5 and O takes 2, 3, 7. Neither triple is a line, so these games

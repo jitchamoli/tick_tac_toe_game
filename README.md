@@ -18,6 +18,10 @@ Then open:
 No build step, no backend, no network calls. Plain HTML, CSS and ES modules.
 Tested in current Chrome.
 
+> After editing a file under `js/`, reload with **Cmd/Ctrl + Shift + R**. Chrome
+> caches ES modules aggressively, and a normal reload can quietly serve you the
+> previous version.
+
 ## The rules in one paragraph
 
 You may hold at most three marks. From your fourth turn onward your oldest mark is

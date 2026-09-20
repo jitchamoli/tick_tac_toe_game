@@ -11,6 +11,7 @@ configuration file that shaped the model's behaviour.
 | Model | Claude Opus 5, 1M context (`claude-opus-5[1m]`) |
 | Date | 20 September 2026 |
 | Browser automation | Playwright MCP server, used to drive and verify the game in Chrome |
+| Skills invoked | `superpowers:brainstorming`, loaded before any design decision; its definition is in `config/superpowers/skills/` |
 | Other MCP servers present | claude.ai connectors (Claude Docs, Google Drive) and a Financial Modeling Prep server — none used for this work; the FMP server failed to connect at startup |
 
 Everything was done in **one session**. There were no abandoned sessions and no
@@ -31,12 +32,20 @@ The phases inside it, in order, are:
 2. Design discussion with the user — three candidate variants presented, Decay
    Tic-Tac-Toe chosen, then the verification approach, code layout and UI
    affordances settled. Roughly the first twenty minutes, before any code.
-3. Plan written to `~/.claude/plans/we-need-to-make-snug-adleman.md` and approved.
+3. Plan written and approved before any code. The approved version is kept here
+   as `plan-as-approved.md`; Claude Code wrote it to
+   `~/.claude/plans/we-need-to-make-snug-adleman.md`. Reading it against
+   `docs/DESIGN.md` shows what survived contact with the evidence and what did
+   not — the swap rule is in the plan as a fairness fix, and was later removed
+   for being the opposite.
 4. Implementation, in the order of the commits in `git log`: scaffold, engine,
    proof, UI, RULES.md, DESIGN.md, this transcript.
+5. Review with the user: playing the game, questioning whether the burn rule was
+   necessary, and hiding the undo button. The last of these changed the code.
 
-Commit timestamps in `git log` line up with the session file; the work ran from
-about 17:13 to 17:50 local time.
+Commit timestamps in `git log` line up with the session file. Work began at about
+17:13 local time, the first commit landed at 17:32, and the last at 18:15 —
+roughly 65 minutes, against the brief's three-hour box.
 
 ### Things worth looking at in the record
 

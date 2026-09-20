@@ -329,10 +329,11 @@ Honestly, and in order of how much it matters:
 
 ## 9. Time
 
-Roughly 35 minutes of active work to this point, well inside the three-hour box.
-The commit timestamps in `git log` and the session file in `transcript/` show the
-real shape of it: about twenty minutes reading the brief and settling the rules
-before any code, then implementation. No overrun to report.
+Roughly 65 minutes of active work, well inside the three-hour box. The commit
+timestamps in `git log` and the session file in `transcript/` show the real shape
+of it: about twenty minutes reading the brief and settling the rules before any
+code, then implementation to the first complete draft by 17:50, then review —
+playing it, challenging the burn rule, and hiding undo. No overrun to report.
 
 The one genuine wrong turn is in the record rather than hidden: the swap rule was
 designed in, implemented, tested, and then removed once the exhaustive search

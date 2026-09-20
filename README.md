@@ -6,8 +6,13 @@ A two-player tic-tac-toe variant in which **a game can never end in a draw** and
 ## Run it
 
 ```sh
-python -m http.server 8000
+python3 -m http.server 8000
 ```
+
+On a machine where `python` resolves to Python 3, `python -m http.server` works
+too. Recent macOS ships only `python3`, and `python` there is "command not
+found" — which looks like the game failing to load when in fact no server ever
+started.
 
 Then open:
 

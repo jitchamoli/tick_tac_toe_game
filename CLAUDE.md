@@ -1,7 +1,9 @@
 # Decay Tic-Tac-Toe
 
 A tic-tac-toe variant that can never end in a draw. Static files, no build step,
-no backend, no network. Serve with `python -m http.server` and open the page.
+no backend, no network. Serve with `python3 -m http.server 8000` and open the
+page. Use `python3`, not `python` — recent macOS has no `python`, and the
+resulting "command not found" reads like the game failing to load.
 
 ## The two properties that must never break
 

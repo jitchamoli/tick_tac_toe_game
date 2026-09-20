@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "plugins": {
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/jitendrachamoli/.claude/plugins/cache/claude-plugins-official/code-review/c447c3207a42",
+        "version": "c447c3207a42",
+        "installedAt": "2026-04-15T16:41:25.626Z",
+        "lastUpdated": "2026-09-20T08:50:28.006Z",
+        "gitCommitSha": "1afdc0d238b61673e8f2bb57622e73641000bb75"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/jitendrachamoli/.claude/plugins/cache/claude-plugins-official/frontend-design/c447c3207a42",
+        "version": "c447c3207a42",
+        "installedAt": "2026-04-15T16:41:41.159Z",
+        "lastUpdated": "2026-09-20T08:50:28.006Z",
+        "gitCommitSha": "1afdc0d238b61673e8f2bb57622e73641000bb75"
+      }
+    ],
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/jitendrachamoli/.claude/plugins/cache/claude-plugins-official/superpowers/6.3.0",
+        "version": "6.3.0",
+        "installedAt": "2026-04-15T16:41:56.816Z",
+        "lastUpdated": "2026-08-20T10:14:31.698Z",
+        "gitCommitSha": "f9b088f7b3a6fe9d9a9a98e392ad13c9d47053a4"
+      }
+    ],
+    "playwright@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/jitendrachamoli/.claude/plugins/cache/claude-plugins-official/playwright/c447c3207a42",
+        "version": "c447c3207a42",
+        "installedAt": "2026-04-15T16:42:12.750Z",
+        "lastUpdated": "2026-09-20T08:50:28.005Z",
+        "gitCommitSha": "1afdc0d238b61673e8f2bb57622e73641000bb75"
+      }
+    ],
+    "feature-dev@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/jitendrachamoli/.claude/plugins/cache/claude-plugins-official/feature-dev/c447c3207a42",
+        "version": "c447c3207a42",
+        "installedAt": "2026-04-15T16:43:30.128Z",
+        "lastUpdated": "2026-09-20T08:50:28.006Z",
+        "gitCommitSha": "1afdc0d238b61673e8f2bb57622e73641000bb75"
+      }
+    ]
+  }
+}

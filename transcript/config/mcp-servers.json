@@ -1,0 +1,16 @@
+{
+  "_note": "Excerpt of ~/.claude.json: the MCP servers configured for this machine. Environment values are redacted. The claude.ai connectors (Claude Docs, Google Drive) and the playwright plugin server are configured through the Claude Code app rather than this file.",
+  "mcpServers": {
+    "fmp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "financial-modeling-prep-mcp-server"
+      ],
+      "env": {
+        "FMP_TOKEN": "[REDACTED]"
+      }
+    }
+  }
+}
